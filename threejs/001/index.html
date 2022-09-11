@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Getting started with three.js</title>
+</head>
+
+<body style="margin: 0">
+  <script src="node_modules/three/build/three.js"></script>
+  <script>
+    // # Setup
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+    //  Create the empty scene
+    const scene = new THREE.Scene();
+    // Setup the camera
+    const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+    // Add the renderere
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(width, height);
+    // Create the element onto which we will be rendering
+    document.body.appendChild(renderer.domElement);
+
+
+    // #  The actual scene
+    // ## First some shapes
+    // ### Cube
+    var cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
+    //var cubeMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+    var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0xff0000 });
+    var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+    cube.position.set(-1,0,-5);
+    scene.add(cube);
+    
+    // ### Cone
+    var coneGeometry = new THREE.ConeGeometry(0.5, 1, 4);
+    //var coneMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    var coneMaterial = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
+    var cone = new THREE.Mesh(coneGeometry, coneMaterial);
+    cone.position.set(0,2,-5);
+    scene.add(cone);
+    
+    // ### Sphere
+    var sphereGeometry = new THREE.SphereGeometry(0.5, 8, 8);
+    //var sphereMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+    var sphereMaterial = new THREE.MeshLambertMaterial({ color: 0x0000ff });
+    var sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    sphere.position.set(1,0,-5);
+    scene.add(sphere);
+
+    // ### Light Source 
+    var light = new THREE.PointLight(0xFFFFFF);
+    light.position.set(0,10,0)
+    scene.add(light);
+
+    // ## Camera 
+    camera.position.set(0, 0, 0);
+
+    var lightAngle = 0;
+    // #  Rendering
+    function animate() {
+      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+      
+      // Rotating the solids
+      cube.rotation.x += 0.01;
+      cone.rotation.y += 0.01;
+      
+      // moving the light
+      lightAngle+=0.01;
+      if (lightAngle > 2*Math.PI) { lightAngle = 0;};
+
+      light.position.x = 5 * Math.cos(lightAngle);
+      light.position.z =-1+ 5 * Math.sin(lightAngle);
+      
+    }
+    animate();
+  </script>
+
+</body>
+
+</html>
